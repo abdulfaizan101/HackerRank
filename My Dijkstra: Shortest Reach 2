@@ -1,0 +1,61 @@
+function shortestReach(n, edges, s) {
+    let directNodes = {}
+    let indirectNodes = []
+    let result = []
+    let b = 0;
+    let nodeExistInDirectNode = (egs) => {
+        if(directNodes[egs[0]] && directNodes[egs[1]]){
+                    if(result[directNodes[egs[0]]]+egs[2] < result[directNodes[egs[1]]]){
+                        result.push(result[directNodes[egs[0]]]+egs[2]);
+                        result.splice(directNodes[egs[1]],1)
+                    } else {
+                        if(result[directNodes[egs[1]]]+egs[2] < result[directNodes[egs[0]]]){
+                            result.push(result[directNodes[egs[1]]]+egs[2]);
+                            result.splice(directNodes[egs[0]],1)
+                        }
+                    } 
+                } else{
+                    if(directNodes[egs[0]] || directNodes[egs[0]] == 0){
+                        directNodes[egs[1]] = result.length
+                        b++
+                        result.push(result[directNodes[egs[0]]] + egs[2]);
+                        
+                    }else {
+                        if(directNodes[egs[1]] || directNodes[egs[0]] == 0){
+                            directNodes[egs[0]] = result.length
+                            b++
+                        result.push(result[directNodes[egs[1]]] + egs[2]);
+                        }else{ 
+                        return 0;
+                    }
+                    }
+                }
+                return 1;
+    }
+    for(let a = 0; a < edges.length; a++){
+        if(edges[a][0] == s){
+            result[b] = edges[a][2]
+            directNodes[edges[a][1]] = b
+            b++
+        } else {
+            if(edges[a][1] == s){
+                result[b] = edges[a][2]
+                directNodes[edges[a][0]] = b
+                b++
+            } else {
+                if(nodeExistInDirectNode(edges[a]) == 0){
+                    indirectNodes.push(edges[a]);
+                }
+            }
+        }
+    }
+    for(let b = 0; b < indirectNodes.length; b++){
+        let v = nodeExistInDirectNode(indirectNodes[b])
+    }
+    const keysDiff = n - (Object.keys(directNodes).length+1);
+    if(keysDiff > 0){
+        const arr = new Array(keysDiff).fill(-1)
+        result = result.concat(arr)
+    }
+    return result;
+}
